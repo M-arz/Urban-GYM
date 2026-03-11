@@ -8,16 +8,16 @@ export class MembersService {
 
   constructor(
     @InjectRepository(Member)
-    private membersRepository: Repository<Member>,
+    private memberRepository: Repository<Member>,
   ) {}
 
   create(data: any) {
-    const member = this.membersRepository.create(data);
-    return this.membersRepository.save(member);
+    const member = this.memberRepository.create(data);
+    return this.memberRepository.save(member);
   }
 
   findAll() {
-    return this.membersRepository.find();
+    return this.memberRepository.find();
   }
 
 }

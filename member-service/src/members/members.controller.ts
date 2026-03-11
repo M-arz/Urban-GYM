@@ -1,19 +1,19 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body } from '@nestjs/common';
 import { MembersService } from './members.service';
 
 @Controller('members')
 export class MembersController {
 
-  constructor(private membersService: MembersService) {}
-
-  @Get()
-  findAll() {
-    return this.membersService.findAll();
-  }
+  constructor(private readonly membersService: MembersService) {}
 
   @Post()
-  create(@Body() data: any) {
+  createMember(@Body() data: any) {
     return this.membersService.create(data);
+  }
+
+  @Get()
+  getMembers() {
+    return this.membersService.findAll();
   }
 
 }

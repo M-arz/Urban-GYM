@@ -1,18 +1,24 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity('miembros')
 export class Member {
 
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   nombre: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
-  password: string;
+  contraseña: string;
+
+  @Column()
+  rol: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  fecha_registro: Date;
 
 }
