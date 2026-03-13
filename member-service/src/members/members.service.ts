@@ -8,16 +8,45 @@ export class MembersService {
 
   constructor(
     @InjectRepository(Member)
-    private memberRepository: Repository<Member>,
+    private membersRepository: Repository<Member>,
   ) {}
 
+  // Crear miembro
   create(data: any) {
-    const member = this.memberRepository.create(data);
-    return this.memberRepository.save(member);
+    return this.membersRepository.save(data);
   }
 
+  // Login
+  login(data: any) {
+    return this.membersRepository.findOne({
+      where: { email: data.email },
+      relations: ['rol']
+    });
+  }
+
+  // Obtener todos
   findAll() {
-    return this.memberRepository.find();
+    return this.membersRepository.find({
+      relations: ['rol']
+    });
+  }
+
+  // Obtener uno
+  findOne(id: string) {
+    return this.membersRepository.findOne({
+      where: { id },
+      relations: ['rol']
+    });
+  }
+
+  // Actualizar
+  update(id: string, data: any) {
+    return this.membersRepository.update(id, data);
+  }
+
+  // Eliminar
+  remove(id: string) {
+    return this.membersRepository.delete(id);
   }
 
 }

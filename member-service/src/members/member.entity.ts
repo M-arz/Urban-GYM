@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Role } from './role.entity';
 
 @Entity('miembros')
 export class Member {
@@ -16,9 +17,10 @@ export class Member {
   contraseña: string;
 
   @Column()
-  rol: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fecha_registro: Date;
+
+  @ManyToOne(() => Role, role => role.miembros)
+  @JoinColumn({ name: 'rol_id' })
+  rol: Role;
 
 }
