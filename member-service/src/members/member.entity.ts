@@ -1,18 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Role } from './role.entity';
 
-@Entity()
+@Entity('miembros')
 export class Member {
 
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   nombre: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
-  password: string;
+  contraseña: string;
+
+  @Column()
+  fecha_registro: Date;
+
+  @ManyToOne(() => Role, role => role.miembros)
+  @JoinColumn({ name: 'rol_id' })
+  rol: Role;
 
 }

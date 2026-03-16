@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MembersModule } from './members/members.module';
+import { Member } from './members/member.entity';
+import { Role } from './members/role.entity';
 
 @Module({
   imports: [
@@ -12,13 +12,11 @@ import { MembersModule } from './members/members.module';
       port: 5432,
       username: 'postgres',
       password: '1234',
-      database: 'urbangym',
-      autoLoadEntities: true,
+      database: 'members_db',
+      entities: [Member, Role],
       synchronize: true,
     }),
     MembersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
