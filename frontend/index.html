@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban-GYM — Panel de Administración</title>
+  <meta name="description" content="Panel de administración del sistema Urban-GYM. Gestiona miembros y reservas de clases." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🏋️</div>
+      <h1>Urban<span style="color:#8b5cf6">GYM</span></h1>
+    </div>
+    <span class="header-badge">Admin Panel</span>
+  </header>
+
+  <!-- ── Service Status Bar ── -->
+  <div class="status-bar">
+    <div class="status-indicator">
+      <div class="status-dot" id="dot-members"></div>
+      <span>member-service <span id="label-members" style="color:#475569">verificando…</span></span>
+    </div>
+    <div class="status-indicator">
+      <div class="status-dot" id="dot-bookings"></div>
+      <span>booking-service <span id="label-bookings" style="color:#475569">verificando…</span></span>
+    </div>
+  </div>
+
+  <!-- ── Tabs ── -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="tab-members" id="btn-members">
+      👤 Miembros
+    </button>
+    <button class="tab-btn" data-tab="tab-bookings" id="btn-bookings">
+      📅 Reservas
+    </button>
+  </div>
+
+  <!-- ── Main Content ── -->
+  <main>
+
+    <!-- ======== MEMBERS TAB ======== -->
+    <section id="tab-members" class="tab-panel active">
+      <div class="panel-grid">
+
+        <!-- Form -->
+        <div class="card">
+          <div class="card-title">➕ Registrar Nuevo Miembro</div>
+          <form id="form-member" autocomplete="off">
+            <div class="form-group">
+              <label for="member-nombre">Nombre completo</label>
+              <input type="text" id="member-nombre" placeholder="Ej: Juan García" required />
+            </div>
+            <div class="form-group">
+              <label for="member-email">Correo electrónico</label>
+              <input type="email" id="member-email" placeholder="juan@email.com" required />
+            </div>
+            <div class="form-group">
+              <label for="member-password">Contraseña</label>
+              <input type="password" id="member-password" placeholder="••••••••" required minlength="6" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">+ Registrar Miembro</button>
+          </form>
+        </div>
+
+        <!-- List -->
+        <div class="card">
+          <div class="list-header">
+            <div class="card-title" style="margin-bottom:0">📋 Miembros Registrados</div>
+            <span class="list-count" id="members-count">cargando…</span>
+          </div>
+          <div class="data-list" id="members-list">
+            <div class="empty-state">
+              <div class="spinner" style="margin:0 auto"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======== BOOKINGS TAB ======== -->
+    <section id="tab-bookings" class="tab-panel">
+      <div class="panel-grid">
+
+        <!-- Form -->
+        <div class="card">
+          <div class="card-title">➕ Nueva Reserva</div>
+          <form id="form-booking" autocomplete="off">
+            <div class="form-group">
+              <label for="booking-member-id">ID del Miembro</label>
+              <input type="number" id="booking-member-id" placeholder="Ej: 1" required min="1" />
+            </div>
+            <div class="form-group">
+              <label for="booking-tipo">Tipo de clase</label>
+              <select id="booking-tipo" required>
+                <option value="" disabled selected>Selecciona una clase…</option>
+                <option value="Yoga">🧘 Yoga</option>
+                <option value="CrossFit">💪 CrossFit</option>
+                <option value="Spinning">🚴 Spinning</option>
+                <option value="Pilates">🤸 Pilates</option>
+                <option value="Boxeo">🥊 Boxeo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="booking-fecha">Fecha</label>
+              <input type="date" id="booking-fecha" required />
+            </div>
+            <div class="form-group">
+              <label for="booking-hora">Hora</label>
+              <input type="time" id="booking-hora" required />
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">+ Crear Reserva</button>
+          </form>
+        </div>
+
+        <!-- List -->
+        <div class="card">
+          <div class="list-header">
+            <div class="card-title" style="margin-bottom:0">📋 Reservas Activas</div>
+            <span class="list-count" id="bookings-count">cargando…</span>
+          </div>
+          <div class="data-list" id="bookings-list">
+            <div class="empty-state">
+              <div class="spinner" style="margin:0 auto"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Toast container ── -->
+  <div id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
