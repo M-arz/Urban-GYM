@@ -8,7 +8,7 @@ import {
     ParseIntPipe,
 } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
-import { Booking } from './booking.entity';
+import { CreateBookingDto } from './dto/create-booking.dto';
 
 @Controller('bookings')
 export class BookingsController {
@@ -25,8 +25,8 @@ export class BookingsController {
     }
 
     @Post()
-    create(@Body() data: Partial<Booking>) {
-        return this.bookingsService.create(data);
+    create(@Body() createBookingDto: CreateBookingDto) {
+        return this.bookingsService.create(createBookingDto);
     }
 
     @Delete(':id')

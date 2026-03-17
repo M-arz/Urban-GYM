@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Booking } from './booking.entity';
+import { CreateBookingDto } from './dto/create-booking.dto';
 
 @Injectable()
 export class BookingsService {
@@ -20,8 +21,8 @@ export class BookingsService {
         return booking;
     }
 
-    create(data: Partial<Booking>) {
-        const booking = this.bookingsRepository.create(data);
+    create(createBookingDto: CreateBookingDto) {
+        const booking = this.bookingsRepository.create(createBookingDto);
         return this.bookingsRepository.save(booking);
     }
 

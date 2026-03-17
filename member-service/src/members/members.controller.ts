@@ -1,5 +1,7 @@
-import { Controller, Post, Get, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, Put, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { MembersService } from './members.service';
+import { CreateMemberDto } from './dto/create-member.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Controller()
 export class MembersController {
@@ -8,14 +10,15 @@ export class MembersController {
 
   // Registro
   @Post('auth/register')
-  register(@Body() data: any) {
-    return this.membersService.create(data);
+  register(@Body() createMemberDto: CreateMemberDto) {
+    return this.membersService.create(createMemberDto);
   }
 
   // Login
   @Post('auth/login')
-  login(@Body() data: any) {
-    return this.membersService.login(data);
+  @HttpCode(HttpStatus.OK)
+  login(@Body() loginDto: LoginDto) {
+    return this.membersService.login(loginDto);
   }
 
   // Obtener todos
