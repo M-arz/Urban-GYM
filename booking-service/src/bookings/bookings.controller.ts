@@ -14,13 +14,19 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 export class BookingsController {
     constructor(private readonly bookingsService: BookingsService) { }
 
+    @Get('classes')
+    getClasses() {
+        // En una app real esto vendría de un ClassService, por ahora lo simulamos
+        return this.bookingsService.getAvailableClasses();
+    }
+
     @Get()
     findAll() {
         return this.bookingsService.findAll();
     }
 
     @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id: number) {
+    findOne(@Param('id') id: string) {
         return this.bookingsService.findOne(id);
     }
 
@@ -30,7 +36,7 @@ export class BookingsController {
     }
 
     @Delete(':id')
-    remove(@Param('id', ParseIntPipe) id: number) {
+    remove(@Param('id') id: string) {
         return this.bookingsService.remove(id);
     }
 }

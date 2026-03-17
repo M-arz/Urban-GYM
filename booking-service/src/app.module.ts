@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BookingsModule } from './bookings/bookings.module';
 import { Booking } from './bookings/booking.entity';
+import { ClassGym } from './bookings/class-gym.entity';
 
 @Module({
     imports: [
@@ -19,8 +20,9 @@ import { Booking } from './bookings/booking.entity';
                 username: configService.get<string>('DB_USER') || 'postgres',
                 password: configService.get<string>('DB_PASSWORD') || '1234',
                 database: configService.get<string>('DB_NAME') || 'bookings_db',
-                entities: [Booking],
-                synchronize: true, // TODO: false for production
+                entities: [Booking, ClassGym],
+                autoLoadEntities: true,
+                synchronize: false, // Evitar colisiones con tablas físicas
             }),
         }),
         BookingsModule,

@@ -7,6 +7,6 @@ async function bootstrap() {
   app.enableCors();
   // Validación global de DTOs
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
-  await app.listen(3001);
+  await app.listen(3001, '0.0.0.0');
 }
 bootstrap();

@@ -37,6 +37,11 @@ export class BookingsGatewayController {
         }
     }
 
+    @Get('classes')
+    async getClasses(@Res() res: Response) {
+        return this.forwardRequest('get', '/bookings/classes', null, res);
+    }
+
     @Get()
     async findAll(@Res() res: Response) {
         return this.forwardRequest('get', '/bookings', null, res);

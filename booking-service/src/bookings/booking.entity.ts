@@ -1,19 +1,19 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity('reserva')
 export class Booking {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid', { name: 'id_reserva' })
+    idReserva: string;
 
-    @Column()
-    memberId: number;
+    @Column({ name: 'clase_id' })
+    claseId: number;
 
-    @Column()
-    fecha: string;
+    @Column({ name: 'miembro_id' })
+    miembroId: string;
 
-    @Column()
-    hora: string;
+    @Column({ type: 'timestamp', name: 'fecha', default: () => 'CURRENT_TIMESTAMP' })
+    fecha: Date;
 
-    @Column()
-    tipo: string;
+    @Column({ name: 'estado', default: 'confirmada' })
+    estado: string;
 }
