@@ -1,0 +1,20 @@
+[33m1c2fb71[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m feat(frontend)
+[33m09ea10b[m microservicios funcionando
+[33mb28474c[m Refactor: Microservices architecture reorganization, security improvements, and new React frontend
+[33m799cd94[m merge: integrar cambios del remoto con nuevos microservicios locales
+[33m2a31e73[m feat(frontend): creacion del frontend inicial del panel de administracion
+[33mb6aeb73[m feat(api-gateway): creacion del API Gateway en puerto 3000
+[33m6740f98[m feat(booking-service): creacion del microservicio de reservas en puerto 3002
+[33m73dfe24[m fix(member-service): cambiar puerto a 3001 y habilitar CORS para el API Gateway
+[33m9718c2d[m actualizacion
+[33mb005bbe[m microservicio con sus endppint
+[33m5520405[m corrigiendo
+[33mb45a593[m api agregada
+[33m058d0cc[m recommendation-service agregado
+[33mc307886[m merge del repositorio remoto con el proyecto local
+[33m697e09d[m proyecto Urban-GYM con microservicios
+[33m75b6c8f[m arreglo billing-service como carpeta normal
+[33m7d4cc1d[m billing-service agregado
+[33mffb843a[m booking-service agregado
+[33med617a1[m Add initial README.md for UrbanGym project
+[33mcbae21d[m Primer microservicio

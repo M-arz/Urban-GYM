@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Member } from './member.entity';
@@ -82,8 +82,33 @@ export class MembersService {
   }
 
   // Actualizar
-  update(id: string, data: any) {
-    return this.membersRepository.update(id, data);
+  async update(id: string, data: any) {
+    // Si viene una nueva contraseña, verificar la actual y hashear la nueva
+    if (data.newPassword) {
+      const member = await this.membersRepository.findOne({ where: { id } });
+      if (!member) throw new BadRequestException('Miembro no encontrado');
+
+      if (!data.currentPassword) {
+        throw new BadRequestException('Debes proporcionar la contraseña actual');
+      }
+
+      const isValid = await bcrypt.compare(data.currentPassword, member.password);
+      if (!isValid) {
+        throw new UnauthorizedException('La contraseña actual es incorrecta');
+      }
+
+      data.password = await bcrypt.hash(data.newPassword, 10);
+      delete data.currentPassword;
+      delete data.newPassword;
+    } else {
+      // Si no cambia contraseña, nunca guardar el campo password (evita sobreescribir)
+      delete data.password;
+      delete data.currentPassword;
+      delete data.newPassword;
+    }
+
+    await this.membersRepository.update(id, data);
+    return this.membersRepository.findOne({ where: { id }, relations: ['rol'] });
   }
 
   // Eliminar
@@ -91,4 +116,4 @@ export class MembersService {
     return this.membersRepository.delete(id);
   }
 
-}
+}

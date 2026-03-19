@@ -1,6 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 import { Booking } from './booking.entity';
 import { ClassGym } from './class-gym.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
@@ -12,6 +14,7 @@ export class BookingsService {
         private bookingsRepository: Repository<Booking>,
         @InjectRepository(ClassGym)
         private classesRepository: Repository<ClassGym>,
+        private httpService: HttpService,
     ) { }
 
     async getAvailableClasses() {
@@ -41,6 +44,28 @@ export class BookingsService {
     }
 
     async create(createBookingDto: CreateBookingDto) {
+        // Validar que la clase existe localmente
+        const classGym = await this.classesRepository.findOneBy({ idClase: createBookingDto.claseId });
+        if (!classGym) {
+            throw new NotFoundException(`La clase con ID ${createBookingDto.claseId} no existe`);
+        }
+
+        // Validación Cross-Service: Verificar que el miembro existe llamando al Member Service
+        try {
+            const memberServiceUrl = process.env.MEMBER_SERVICE_URL || 'http://localhost:3001';
+            await firstValueFrom(
+                this.httpService.get(`${memberServiceUrl}/members/${createBookingDto.miembroId}`)
+            );
+        } catch (error: any) {
+            // Si el error es 404, el usuario no existe en el Member Service
+            if (error.response?.status === 404 || error.response?.status === 400) {
+                throw new BadRequestException('El ID del miembro no es válido o no existe en el sistema');
+            }
+            // Si el Member Service está caído
+            console.error('Error contactando al Member Service:', error.message);
+            throw new InternalServerErrorException('Error validando el miembro. Servicio de miembros no disponible.');
+        }
+
         const booking = this.bookingsRepository.create(createBookingDto);
         return this.bookingsRepository.save(booking);
     }

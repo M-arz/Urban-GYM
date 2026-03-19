@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString, Matches, IsIn } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, IsOptional, IsDateString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateBookingDto {
@@ -10,4 +10,8 @@ export class CreateBookingDto {
     @IsString({ message: 'El ID del miembro debe ser una cadena' })
     @IsNotEmpty({ message: 'El ID del miembro es requerido' })
     miembroId: string;
+
+    @IsOptional()
+    @IsDateString({}, { message: 'La fecha debe ser una fecha válida (ISO 8601)' })
+    fecha?: string;
 }
