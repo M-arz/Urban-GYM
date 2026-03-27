@@ -10,6 +10,7 @@ import TrainerPage from './pages/TrainerPage';
 import ProfilePage from './pages/ProfilePage';
 import QRValidatorPage from './pages/QRValidatorPage';
 import FacilitiesPage from './pages/FacilitiesPage';
+import WorkoutsPage from './pages/WorkoutsPage';
 
 function RoleRedirect() {
   const { user, isAuthenticated } = useAuth();
@@ -42,6 +43,33 @@ function App() {
             element={
               <ProtectedRoute roles={['member']}>
                 <Layout><DashboardPage /></Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/entrenamientos"
+            element={
+              <ProtectedRoute roles={['member']}>
+                <Layout><WorkoutsPage /></Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/entrenamientos"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Layout><WorkoutsPage /></Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/trainer/entrenamientos"
+            element={
+              <ProtectedRoute roles={['trainer']}>
+                <Layout><WorkoutsPage /></Layout>
               </ProtectedRoute>
             }
           />

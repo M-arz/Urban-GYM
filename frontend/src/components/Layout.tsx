@@ -10,6 +10,7 @@ import {
   UserCircle,
   ScanLine,
   Building2,
+  Activity,
 } from 'lucide-react';
 
 interface Props {
@@ -28,18 +29,21 @@ export default function Layout({ children }: Props) {
   const navItems = {
     member: [
       { to: '/dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
+      { to: '/entrenamientos', icon: <Activity size={20} />, label: 'Mis Entrenamientos' },
       { to: '/instalaciones', icon: <Building2 size={20} />, label: 'Instalaciones' },
       { to: '/perfil', icon: <UserCircle size={20} />, label: 'Mi Perfil' },
     ],
     admin: [
       { to: '/admin', icon: <ShieldCheck size={20} />, label: 'Panel Admin' },
       { to: '/admin/socios', icon: <Users size={20} />, label: 'Socios' },
+      { to: '/admin/entrenamientos', icon: <Activity size={20} />, label: 'Entrenamientos IoT' },
       { to: '/admin/instalaciones', icon: <Building2 size={20} />, label: 'Instalaciones' },
       { to: '/admin/validar-qr', icon: <ScanLine size={20} />, label: 'Validar Acceso QR' },
     ],
     trainer: [
       { to: '/trainer', icon: <UserCheck size={20} />, label: 'Mi Panel' },
       { to: '/trainer/socios', icon: <Users size={20} />, label: 'Mis Socios' },
+      { to: '/trainer/entrenamientos', icon: <Activity size={20} />, label: 'Entrenamientos IoT' },
       { to: '/instalaciones', icon: <Building2 size={20} />, label: 'Instalaciones' },
     ],
   };
