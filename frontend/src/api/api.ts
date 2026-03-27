@@ -59,6 +59,12 @@ export const waitlistApi = {
   leave: (id: string) => api.delete(`/waitlist/${id}`),
 };
 
+export const workoutsApi = {
+  getAll: () => api.get('/workouts'),
+  getByMember: (memberId: string) => api.get(`/workouts/member/${memberId}`),
+  getStats: (memberId: string) => api.get(`/workouts/stats/${memberId}`),
+};
+
 export const gymsApi = {
   getAll: () => api.get('/gyms'),
   getOpen: () => api.get('/gyms/open'),
