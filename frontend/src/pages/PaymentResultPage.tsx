@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock, Home, RefreshCw } from 'lucide-react';
 
 type ResultType = 'success' | 'failure' | 'pending';
 
 const CONFIG: Record<ResultType, {
-  icon: JSX.Element;
+  icon: React.ReactNode;
   title: string;
   subtitle: string;
   bgGradient: string;
@@ -63,7 +63,9 @@ export default function PaymentResultPage({ type }: PaymentResultPageProps) {
   const paymentId = params.get('payment_id') ?? '—';
   const status = params.get('status') ?? '—';
   const externalRef = params.get('external_reference') ?? '';
-  const plan = externalRef.split('|')[1] ?? params.get('collection_status') ?? '—';
+  
+  // Bug fix: Fallback to localStorage if external_reference is missing
+  const plan = externalRef.split('|')[1] || localStorage.getItem('pendingPlan') || '—';
 
   // Auto-redirect después de 8 s en caso de éxito
   useEffect(() => {
@@ -81,17 +83,17 @@ export default function PaymentResultPage({ type }: PaymentResultPageProps) {
     return () => clearInterval(interval);
   }, [type, navigate]);
 
-  // Limpiar pendingPlan del localStorage
+  // Limpiar pendingPlan del localStorage (solo después de haberlo usado arriba)
   useEffect(() => {
-    localStorage.removeItem('pendingPlan');
+    // Retrasamos la limpieza para asegurar que el componente renderizó el plan
+    const timer = setTimeout(() => {
+      localStorage.removeItem('pendingPlan');
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handlePrimary = () => {
-    if (type === 'failure') {
-      navigate('/perfil');
-    } else {
-      navigate('/perfil');
-    }
+    navigate('/perfil');
   };
 
   const PLAN_LABELS: Record<string, string> = {

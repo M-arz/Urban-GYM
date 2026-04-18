@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { membersApi, classesApi, schedulesApi, bookingsApi, billingApi } from '../api/api';
 import {
   Users, CheckCircle, Dumbbell, CalendarDays, Loader2, TrendingUp,
@@ -43,7 +43,7 @@ const ROLE_IDS = {
   member: 'fcc28f0b-8000-4ecd-8b25-341a3955b2f5',
 };
 
-const ROLE_LABELS: Record<string, { label: string; color: string; icon: JSX.Element }> = {
+const ROLE_LABELS: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   admin: { label: 'Admin', color: 'bg-purple-100 text-purple-700', icon: <Crown size={12} /> },
   trainer: { label: 'Entrenador', color: 'bg-blue-100 text-blue-700', icon: <UserCheck size={12} /> },
   member: { label: 'Socio', color: 'bg-gray-100 text-gray-700', icon: <Shield size={12} /> },
@@ -62,7 +62,7 @@ export default function AdminPage() {
   const [scheduleForm, setScheduleForm] = useState({ class_id: '', date: '', start_time: '', available_spots: 15 });
   const [savingSchedule, setSavingSchedule] = useState(false);
   const [expandedSchedule, setExpandedSchedule] = useState<string | null>(null);
-  const [scheduleBookings, setScheduleBookings] = useState<Record<string, any[]>>({});
+  const [scheduleBookings, setScheduleBookings] = useState<Record<string, { id: string; member_id: string; status: string }[]>>({});
   const [markingAttend, setMarkingAttend] = useState<string | null>(null);
   const [revenue, setRevenue] = useState<{
     total_revenue_cop: string;
@@ -70,7 +70,7 @@ export default function AdminPage() {
     by_plan: Record<string, number>;
     total_payments: number;
   } | null>(null);
-  const [recentPayments, setRecentPayments] = useState<any[]>([]);
+  const [recentPayments, setRecentPayments] = useState<{ id: string; invoice_number: string; created_at?: string; payment_date?: string; amount: number; status: string }[]>([]);
 
   useEffect(() => {
     loadData();
