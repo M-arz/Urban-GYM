@@ -11,7 +11,7 @@ export class MachinesService {
       .getClient()
       .schema('iot')
       .from('machines')
-      .select('id, name, type, gym_id, status, created_at')
+      .select('id, name, type, gym_id, status, created_at, api_key')
       .order('created_at', { ascending: false });
 
     if (error) throw new Error(error.message);
@@ -23,7 +23,7 @@ export class MachinesService {
       .getClient()
       .schema('iot')
       .from('machines')
-      .select('id, name, type, gym_id, status, created_at')
+      .select('id, name, type, gym_id, status, created_at, api_key')
       .eq('id', id)
       .single();
 

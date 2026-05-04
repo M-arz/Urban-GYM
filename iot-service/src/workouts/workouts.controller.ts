@@ -2,27 +2,38 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   Param,
   Post,
-  Request,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import type { RawWorkoutData } from './workouts.service';
 import { WorkoutsService } from './workouts.service';
+import { MachinesService } from '../machines/machines.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { ApiKeyGuard } from '../auth/guards/api-key.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('workouts')
 export class WorkoutsController {
-  constructor(private workoutsService: WorkoutsService) {}
+  constructor(
+    private workoutsService: WorkoutsService,
+    private machinesService: MachinesService,
+  ) {}
 
   // Máquina envía datos de entrenamiento con API Key
-  @Post()
-  @UseGuards(ApiKeyGuard)
-  recordWorkout(@Request() req: any, @Body() body: RawWorkoutData) {
-    return this.workoutsService.recordWorkout(req.machine, body);
+  @Post('machine/:machineId')
+  async recordWorkout(
+    @Param('machineId') machineId: string,
+    @Headers('x-api-key') apiKey: string,
+    @Body() body: RawWorkoutData,
+  ) {
+    const machine = await this.machinesService.findOne(machineId);
+    if (!machine || machine.api_key !== apiKey) {
+      throw new UnauthorizedException('API Key inválida o máquina inactiva');
+    }
+    return this.workoutsService.recordWorkout(machine, body);
   }
 
   // Admin y trainer ven todos los entrenamientos

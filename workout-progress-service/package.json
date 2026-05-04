@@ -67,7 +67,16 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "collectCoverageFrom": ["**/*.(t|j)s"],
+    "collectCoverageFrom": [
+      "**/*.(t|j)s",
+      "!**/*.module.ts",
+      "!**/main.ts",
+      "!**/*.strategy.ts",
+      "!**/*.dto.ts",
+      "!**/*.interface.ts",
+      "!**/*.entity.ts",
+      "!**/supabase.service.ts"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

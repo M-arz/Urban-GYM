@@ -19,7 +19,7 @@ export class ProgressController {
 
   // Endpoint interno: migra workouts históricos del IoT service
   @Post('migrate')
-  async migrate(@Headers('x-internal-key') internalKey: string) {
+  async migrateIot(@Headers('x-internal-key') internalKey: string) {
     if (internalKey !== process.env.INTERNAL_SECRET) {
       throw new UnauthorizedException('Clave interna inválida');
     }
