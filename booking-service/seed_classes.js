@@ -1,8 +1,9 @@
+require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
-  'https://cxhjmilbamlhujirjpec.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4aGptaWxiYW1saHVqaXJqcGVjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDUzNTgxMCwiZXhwIjoyMDkwMTExODEwfQ.g2sF8aek9eigugRKdSrn6nNoTjtksjQQA6eJcKFW7eg'
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 const classes = [
