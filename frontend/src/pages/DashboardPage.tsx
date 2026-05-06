@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { schedulesApi, bookingsApi, waitlistApi } from '../api/api';
+import { schedulesApi, bookingsApi, waitlistApi, recommendationsApi } from '../api/api';
 import { useAuth } from '../context/AuthContext';
 import { CalendarDays, Clock, CheckCircle, XCircle, Loader2, ListOrdered } from 'lucide-react';
 
@@ -78,8 +78,7 @@ export default function DashboardPage() {
   const fetchRecommendations = async () => {
     if (!user?.id) return;
     try {
-      // Import recommendationsApi at the top level
-      const { recommendationsApi } = await import('../api/api');
+
       const { data } = await recommendationsApi.getMemberRecommendations(user.id);
       setRecommendations(data);
     } catch (err) {

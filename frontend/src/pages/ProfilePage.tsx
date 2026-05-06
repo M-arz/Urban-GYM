@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { membersApi, authApi, billingApi } from '../api/api';
+import { membersApi, authApi, billingApi, recommendationsApi } from '../api/api';
 import { User, Mail, Phone, CreditCard, RefreshCw, Loader2, CheckCircle, QrCode, Receipt, TrendingUp } from 'lucide-react';
 
 // Valores en centavos (igual que en Stripe y Supabase)
@@ -50,20 +50,18 @@ export default function ProfilePage() {
     }).catch(() => {});
 
     if (user?.id) {
-      import('../api/api').then(({ recommendationsApi }) => {
-        recommendationsApi.getFitnessPlan(user.id)
-          .then(({ data }) => {
-            if (data?.metrics) {
-              setMetricsForm({
-                weight_kg: data.metrics.weight_kg.toString(),
-                height_cm: data.metrics.height_cm.toString(),
-                goal: data.metrics.goal
-              });
-              setFitnessPlan(data);
-            }
-          })
-          .catch(() => {});
-      });
+      recommendationsApi.getFitnessPlan(user.id)
+        .then(({ data }) => {
+          if (data?.metrics) {
+            setMetricsForm({
+              weight_kg: data.metrics.weight_kg.toString(),
+              height_cm: data.metrics.height_cm.toString(),
+              goal: data.metrics.goal
+            });
+            setFitnessPlan(data);
+          }
+        })
+        .catch(() => {});
     }
   }, [user?.id]);
 
@@ -91,7 +89,7 @@ export default function ProfilePage() {
     if (!user?.id) return;
     setSavingMetrics(true);
     try {
-      const { recommendationsApi } = await import('../api/api');
+
       await recommendationsApi.saveMetrics(user.id, {
         weight_kg: Number(metricsForm.weight_kg),
         height_cm: Number(metricsForm.height_cm),
