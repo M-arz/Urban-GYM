@@ -5,7 +5,14 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  // ── CORS ────────────────────────────────────────────────────────────────
+  // En producción, establece FRONTEND_URL con el dominio exacto de Vercel
+  app.enableCors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-internal-key'],
+    credentials: true,
+  });
 
   const memberServiceUrl =
     process.env.MEMBER_SERVICE_URL || 'http://localhost:3001';
@@ -37,13 +44,17 @@ async function bootstrap() {
     }),
   );
 
-  // Proxy → booking-service (conserva el path completo)
+  // Proxy → booking-service
+  // IMPORTANTE: BookingsController usa @Controller() sin prefijo, por lo que
+  // las rutas /classes, /schedules, /bookings, /waitlist existen en la raíz
+  // del servicio. NO se usa pathRewrite para evitar doble prefijo:
+  //   Sin pathRewrite: Express strip /classes → proxy recibe / → reenvía /classes ✓
+  //   Con pathRewrite: Express strip /classes → proxy recibe / → reescribe a /classes/ → servicio recibe /classes/classes ✗
   app.use(
     '/waitlist',
     createProxyMiddleware({
       target: bookingServiceUrl,
       changeOrigin: true,
-      pathRewrite: { '^/': '/waitlist/' },
     }),
   );
   app.use(
@@ -51,7 +62,6 @@ async function bootstrap() {
     createProxyMiddleware({
       target: bookingServiceUrl,
       changeOrigin: true,
-      pathRewrite: { '^/': '/classes/' },
     }),
   );
   app.use(
@@ -59,7 +69,6 @@ async function bootstrap() {
     createProxyMiddleware({
       target: bookingServiceUrl,
       changeOrigin: true,
-      pathRewrite: { '^/': '/schedules/' },
     }),
   );
   app.use(
@@ -67,7 +76,6 @@ async function bootstrap() {
     createProxyMiddleware({
       target: bookingServiceUrl,
       changeOrigin: true,
-      pathRewrite: { '^/': '/bookings/' },
     }),
   );
 
